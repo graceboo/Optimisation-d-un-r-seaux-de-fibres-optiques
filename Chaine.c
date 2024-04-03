@@ -540,7 +540,6 @@ Reseau* reconstitueReseauHachage(Chaines *C, int M){
 }
 
 void chaineCoordMinMax(Chaines* C,double* xmin ,double* ymin,double* xmax,double*ymax){
-<<<<<<< HEAD
     *xmin=__DBL_MAX__;
     *ymin=__DBL_MAX__;
     *xmax=__DBL_MAX__;
@@ -573,7 +572,6 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
     arbre->se=NULL;
     arbre->so=NULL;
     return arbre;
-=======
 }
  
 >>>>>>> 8ff9db93a825141c48c093990edd9b22ccf74abb
