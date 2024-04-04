@@ -44,6 +44,7 @@ CellCommodite * creer_CellCommodite(Noeud * extraA,Noeud * extraB);
 void inserer_CellCommodite(CellCommodite ** liste,CellCommodite *c);
 void inserer_CellNoeud(CellNoeud ** liste,CellNoeud *c);
 void inserer_CellNoeud_coor(CellNoeud ** liste,CellNoeud *c);
+
 // libere ue CellNoeud
 void libererCellNoeud(CellNoeud *cell);
 

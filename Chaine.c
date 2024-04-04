@@ -616,8 +616,8 @@ void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){ //parent= r
     if((*a) != NULL && (*a)->noeud == NULL){
         double x=n->x;
         double y=n->y;
-        double xc=(*a)->xc;
-        double yc=(*a)->yc;
+        double xc=parent->xc;
+        double yc=parent->yc;
         //so
         if(x < xc && y < yc ){
             insereNoeudArbre(n,&((*a)->so),(*a));
