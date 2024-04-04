@@ -576,11 +576,12 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
 
 void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){ //parent= racine 
     // arbre vide 
-    if( a == NULL || (*a) == NULL){
+    if( (*a) == NULL){
         double x=n->x;
         double y=n->y;
         double xc=parent->xc;
         double yc=parent->yc;
+        *a=parent;
         /*so*/
         if( x < xc && y < yc ){ 
             (parent)->so=creerArbreQuat(xc/2.0,yc/2.0,parent->coteX/2.0,parent->coteY/2.0);
@@ -606,9 +607,10 @@ void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){ //parent= r
     /*si c'est une feuille qui a déjà un noeud */
     if((*a) != NULL && (*a)->noeud != NULL){
         Noeud * tmp=(*a)->noeud;
-        free((*a)->noeud);
-        insereNoeudArbre(n,NULL,*a); /* on modifie */
-        insereNoeudArbre(tmp,NULL,*a);
+        free((*a)->noeud); /*on doit remplacer free par une fonction libererNoeud*/
+        ArbreQuat *af=NULL;
+        insereNoeudArbre(n,&af,*a); /* on modifie */
+        insereNoeudArbre(tmp,&af,*a);
     }
     
 
@@ -616,8 +618,8 @@ void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){ //parent= r
     if((*a) != NULL && (*a)->noeud == NULL){
         double x=n->x;
         double y=n->y;
-        double xc=parent->xc;
-        double yc=parent->yc;
+        double xc=(*a)->xc;
+        double yc=(*a)->yc;
         //so
         if(x < xc && y < yc ){
             insereNoeudArbre(n,&((*a)->so),(*a));
@@ -639,7 +641,7 @@ void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){ //parent= r
 
  Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, double x, double y){
     Noeud* n;
-    if( a == NULL || (*a) == NULL){
+    if( (*a) == NULL){
         n =creer_Noeud(R->nbNoeuds+1,x,y);
         printf("%d %lf,%lf\n",n->num,x,y);
         R->nbNoeuds++;
