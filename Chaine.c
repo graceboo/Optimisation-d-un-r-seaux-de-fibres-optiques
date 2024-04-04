@@ -573,6 +573,71 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
     arbre->so=NULL;
     return arbre;
 }
- 
->>>>>>> 8ff9db93a825141c48c093990edd9b22ccf74abb
+
+void insereNoeudArbre(Noeud * n, ArbreQuat ** a,ArbreQuat * parent){
+    // arbre vide 
+    if(*a==NULL){
+        double x=n->x;
+        double y=n->y;
+        double xc=parent->xc;
+        double yc=parent->yc;
+        *a=creerArbreQuat(xc,yc,parent->coteX,parent->coteY);
+        /*so*/
+        if( x < xc && y < yc ){ 
+            (*a)->so=creerArbreQuat(xc/2.0,yc/2.0,parent->coteX/2.0,parent->coteY/2.0);
+            (*a)->so->noeud=n;
+        }
+        /*se*/
+        if(x >= xc && y < yc){
+            (*a)->se=creerArbreQuat(xc+xc/2.0,yc/2.0,parent->coteX/2.0,parent->coteY/2.0);
+            (*a)->se->noeud=n;
+        }
+        /*no*/
+        if(x < xc && y >= yc){
+            (*a)->no=creerArbreQuat(xc/2.0,yc+yc/2.0,parent->coteX/2.0,parent->coteY/2.0);
+            (*a)->no->noeud=n;
+        }
+        /*ne*/
+        if(x >= xc && y >= yc){
+            (*a)->ne=creerArbreQuat(xc+xc/2.0,yc+yc/2.0,parent->coteX/2.0,parent->coteY/2.0);
+            (*a)->ne->noeud=n;
+        }
+        
+    }
+
+    /*si c'est une feuille qui a déjà un noeud */
+    if((*a) != NULL && (*a)->noeud != NULL){
+        Noeud * tmp=(*a)->noeud;
+        ArbreQuat * np=creerArbreQuat((*a)->xc,(*a)->yc,(*a)->coteX,(*a)->coteY);
+        *a=NULL;
+        insereNoeudArbre(n,a,np); /* on modifie */
+        insereNoeudArbre(tmp,a,np);
+    }
+    
+
+    /* interne */
+    if((*a) != NULL && (*a)->noeud == NULL){
+        double x=n->x;
+        double y=n->y;
+        double xc=(*a)->xc;
+        double yc=(*a)->yc;
+        //so
+        if(x < xc && y < yc ){
+            insereNoeudArbre(n,&((*a)->so),(*a));
+        }
+        //se
+        if(x >= xc && y < yc){
+            insereNoeudArbre(n,&((*a)->se),(*a));
+        }
+        //no
+        if(x < xc && y >= yc){
+            insereNoeudArbre(n,&((*a)->no),(*a));
+        }
+        //ne
+        if(x >= xc && y >= yc){
+            insereNoeudArbre(n,&((*a)->ne),(*a));
+        }
+    }   
+} 
+
 

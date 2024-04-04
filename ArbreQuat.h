@@ -12,5 +12,6 @@ typedef struct arbreQuat{
     struct arbreQuat *no;   /* Sous-arbre nord-ouest, pour x < xc et y >= yc */
     struct arbreQuat *ne;   /* Sous-arbre nord-est, pour x >= xc et y >= yc */
 } ArbreQuat;
-
+void chaineCoordMinMax(Chaines* C,double* xmin ,double* ymin,double* xmax,double*ymax);
+ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY);
 #endif
