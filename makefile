@@ -9,7 +9,7 @@ ReconstitueReseau: Chaine.o ReconstitueReseau.o SVGwriter.o
 ChaineMain: Chaine.o ChaineMain.o SVGwriter.o
 	$(CC) $(CFLAGS) -ggdb -o ChaineMain Chaine.o SVGwriter.o ChaineMain.o -lm
 
-Chaine.o: Chaine.c Chaine.h Reseau.h Hachage.h
+Chaine.o: Chaine.c Chaine.h Reseau.h Hachage.h ArbreQuat.h
 	$(CC) $(CFLAGS) -c Chaine.c 
 
 SVGwriter.o: SVGwriter.c SVGwriter.h 

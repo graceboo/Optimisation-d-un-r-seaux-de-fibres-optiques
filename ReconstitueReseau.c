@@ -4,6 +4,7 @@
 #include "Chaine.h"
 #include "SVGwriter.h"
 #include "Hachage.h"
+#include "ArbreQuat.h"
 
 int main(int argc , char ** argv){
     char* fichier;
@@ -22,14 +23,32 @@ int main(int argc , char ** argv){
     FILE *fl=fopen(fichier,"r");
     Chaines *c=lectureChaines(fl);
     Reseau * r=reconstitueReseauListe(c);
+    Reseau*  r2=reconstitueReseauHachage(c,200);
+    Reseau*  r3=reconstitueReseauArbre(c);
 
     //ouvrir le fichier pour l'écriture 
     FILE *fe=fopen("reseau.cha","w");
     ecrireReseau(r,fe);
     afficheReseauSVG(r,"fichiersvg");
+
+    FILE *fe2=fopen("reseau2.cha","w");
+    ecrireReseau(r2,fe2);
+    afficheReseauSVG(r2,"fichiersvg2");
+
+
+    FILE *fe3=fopen("reseau3.cha","w");
+    ecrireReseau(r3,fe3);
+    afficheReseauSVG(r3,"fichiersvg3");
+
     liberer_Chaines(c);
     libererreseau(r);
+    libererreseau(r2);
+    libererreseau(r3);
+
+
     fclose(fe);
+    fclose(fe2);
+    fclose(fe3);
     fclose(fl);
     int x,y;
     for(x=1;x<10;x++){
