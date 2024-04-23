@@ -1,6 +1,5 @@
 #ifndef __CHAINE_H__
 #define __CHAINE_H__	
-#include<stdio.h>
 
 /* Liste chainee de points */
 typedef struct cellPoint{

@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include "Reseau.h"
 #include "Chaine.h"
-#include "SVGwriter.h"
 #include "Hachage.h"
+#include "SVGwriter.h"
 #include "ArbreQuat.h"
+
 
 int main(int argc , char ** argv){
     char* fichier;
@@ -22,14 +23,15 @@ int main(int argc , char ** argv){
     /*on ouvre le fichier pour la lecture */
     FILE *fl=fopen(fichier,"r");
     Chaines *c=lectureChaines(fl);
-    Reseau * r=reconstitueReseauListe(c);
+    
+    Reseau * r1=reconstitueReseauListe(c);
     Reseau*  r2=reconstitueReseauHachage(c,200);
     Reseau*  r3=reconstitueReseauArbre(c);
 
     //ouvrir le fichier pour l'écriture 
     FILE *fe=fopen("reseau.cha","w");
-    ecrireReseau(r,fe);
-    afficheReseauSVG(r,"fichiersvg");
+    ecrireReseau(r1,fe);
+    afficheReseauSVG(r1,"fichiersvg1");
 
     FILE *fe2=fopen("reseau2.cha","w");
     ecrireReseau(r2,fe2);
@@ -41,7 +43,7 @@ int main(int argc , char ** argv){
     afficheReseauSVG(r3,"fichiersvg3");
 
     liberer_Chaines(c);
-    libererreseau(r);
+    libererreseau(r1);
     libererreseau(r2);
     libererreseau(r3);
 
@@ -50,13 +52,16 @@ int main(int argc , char ** argv){
     fclose(fe2);
     fclose(fe3);
     fclose(fl);
+
+
+  //table de hachage
     int x,y;
     for(x=1;x<10;x++){
         for(y=1;y<10;y++){
             printf("x= %d y=%d res= %d\n", x,y,clef(x,y));
         }
     }
-    return 0;
+   return 0;
 
 
 }

@@ -1,6 +1,6 @@
 #ifndef __ARBRE_QUAT_H__
 #define __ARBRE_QUAT_H__
-
+#include "Reseau.h"
 /* Arbre quaternaire contenant les noeuds du reseau */
 typedef struct arbreQuat{
     double xc, yc;          /* Coordonnees du centre de la cellule */	
@@ -17,4 +17,5 @@ void chaineCoordMinMax(Chaines* C,double* xmin ,double* ymin,double* xmax,double
 ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY);
 Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, double x, double y);
 Reseau* reconstitueReseauArbre(Chaines* C);
+void liberer_arbre(ArbreQuat * a);
 #endif

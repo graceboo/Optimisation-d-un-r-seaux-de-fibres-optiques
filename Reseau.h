@@ -2,6 +2,7 @@
 #define __RESEAU_H__
 #include "Chaine.h"
 
+
 typedef struct noeud Noeud;
 
 /* Liste chainee de noeuds (pour la liste des noeuds du reseau ET les listes des voisins de chaque noeud) */
@@ -52,5 +53,7 @@ void libererCellNoeud(CellNoeud *cell);
 void libererCellCommodite(CellCommodite *cell);
 // libère le réseau
 void libererreseau(Reseau *R);
+
+void liberer_Noeud(Noeud *n);
 #endif
 
