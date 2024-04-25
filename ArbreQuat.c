@@ -79,7 +79,6 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
         (*a)-> noeud = NULL ; // on libere la cellule 
         parent = (*a);
         (*a)= NULL;
-        //printf("jusqu'ici tout va bien 4 \n");
         //on insere les deux noeuds
         insererNoeudArbre (n, a, parent);  
         parent = (*a);//pour ne pas avoir une segFault 

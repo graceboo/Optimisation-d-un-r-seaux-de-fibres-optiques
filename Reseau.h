@@ -43,17 +43,9 @@ CellNoeud *creer_CellNoeuds(Noeud *n);
 Noeud *creer_Noeud(int num,double x,double y);
 CellCommodite * creer_CellCommodite(Noeud * extraA,Noeud * extraB);
 void inserer_CellCommodite(CellCommodite ** liste,CellCommodite *c);
-void inserer_CellNoeud(CellNoeud ** liste,CellNoeud *c);
 void inserer_CellNoeud_coor(CellNoeud ** liste,CellNoeud *c);
 
-// libere ue CellNoeud
-void libererCellNoeud(CellNoeud *cell);
-
-//libère une cellCommodite
-void libererCellCommodite(CellCommodite *cell);
 // libère le réseau
 void libererreseau(Reseau *R);
-
-void liberer_Noeud(Noeud *n);
 #endif
 

@@ -13,55 +13,6 @@ CellNoeud *creer_CellNoeuds(Noeud *n){
     return new;
 }
 
-/* Fonction pour libérer une liste de CellNoeud */
-void libererCellNoeud(CellNoeud *cell) {
-    CellNoeud * c=cell;
-    CellNoeud *suiv;
-    while (c != NULL) {
-        suiv= c->suiv;
-        free(c);
-        c=suiv;
-    }
-}
-
-/* Fonction pour libérer une liste de CellCommodite */
-void libererCellCommodite(CellCommodite *cell) {
-    CellCommodite *c=cell;
-    CellCommodite *suiv;
-    while (c != NULL) {
-        suiv=c->suiv;
-        free(c);
-        c=suiv;
-    }
-}
-void liberer_Noeud(Noeud *n){
-    libererCellNoeud(n->voisins);
-    free(n);
-}
-
-/* Fonction pour libérer un réseau */
-void libererreseau(Reseau *R) {
-    if (R == NULL) return;
-    // Libérer la liste des nœuds
-    CellNoeud * courant=R->noeuds;
-    CellNoeud *suiv;
-    while(courant){
-        suiv=courant->suiv;
-        liberer_Noeud(courant->nd);
-        free(courant);
-        courant=suiv;
-    }
-
-    // Libérer la liste des commodités
-    libererCellCommodite(R->commodites);
-
-    // Enfin, libérer la structure du réseau elle-même
-    free(R);
-}
-
-
-
-
 Noeud *creer_Noeud(int num,double x,double y){
     Noeud * n=malloc(sizeof(Noeud));
     n->num=num;
@@ -156,6 +107,7 @@ Reseau * reconstitueReseauListe(Chaines *C){
             }else{
                 extrA=n;
             }
+
             precedent=n;
             p=p->suiv;
 
@@ -166,6 +118,48 @@ Reseau * reconstitueReseauListe(Chaines *C){
     
     return r;
 }
+/* Fonction pour libérer un réseau */
+void libererreseau(Reseau *R) {
+    if (R == NULL) return;
+
+    // Libérer la liste des nœuds
+    CellNoeud *courant = R->noeuds;
+    CellNoeud *suiv;
+    while (courant) {
+        suiv = courant->suiv;
+
+        // Libérer la liste des voisins du nœud
+        CellNoeud *voisins = courant->nd->voisins;
+        CellNoeud *voisin_suiv;
+        while (voisins) {
+            voisin_suiv = voisins->suiv;
+            free(voisins);
+            voisins = voisin_suiv;
+        }
+
+        // Libérer le nœud lui-même
+        free(courant->nd);
+
+        // Libérer la cellule de nœud
+        free(courant);
+
+        courant = suiv;
+    }
+
+    // Libérer la liste des commodités
+    CellCommodite *c = R->commodites;
+    CellCommodite *c_suiv;
+    while (c) {
+        c_suiv = c->suiv;
+        free(c);
+        c = c_suiv;
+    }
+
+    // Enfin, libérer la structure du réseau elle-même
+    free(R);
+}
+
+
 int nbLiaisons(Reseau *R){
     CellNoeud * courant=R->noeuds;
     CellNoeud * voisin;

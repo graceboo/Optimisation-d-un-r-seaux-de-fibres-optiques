@@ -31,16 +31,16 @@ int main(int argc , char ** argv){
     //ouvrir le fichier pour l'écriture 
     FILE *fe=fopen("reseau.cha","w");
     ecrireReseau(r1,fe);
-    afficheReseauSVG(r1,"fichiersvg1");
+    afficheReseauSVG(r1,"fichiersvg_liste");
 
     FILE *fe2=fopen("reseau2.cha","w");
     ecrireReseau(r2,fe2);
-    afficheReseauSVG(r2,"fichiersvg2");
+    afficheReseauSVG(r2,"fichiersvg_hachage");
 
 
     FILE *fe3=fopen("reseau3.cha","w");
     ecrireReseau(r3,fe3);
-    afficheReseauSVG(r3,"fichiersvg3");
+    afficheReseauSVG(r3,"fichiersvg_Arbre");
 
     liberer_Chaines(c);
     libererreseau(r1);

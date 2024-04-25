@@ -27,7 +27,7 @@ int main(int argc,char ** argv ){
     FILE *fe=fopen(nom_fic,"w");
     ecrireChaines(c,fe);
 
-    afficheChainesSVG(c,"fichiersvg");
+    afficheChainesSVG(c,"fichiersvg_Chaines");
 
 
     printf("la longueur totale des chaines :%.2lf\nle nombre total de points:%d\n",longueurTotale(c),comptePointsTotal(c));
