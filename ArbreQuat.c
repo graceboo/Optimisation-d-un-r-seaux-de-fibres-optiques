@@ -25,14 +25,6 @@ void chaineCoordMinMax(Chaines* C,double* xmin ,double* ymin,double* xmax,double
         chaine=chaine->suiv;
     }
 }
-void liberer_arbre(ArbreQuat * a){
-    if(a==NULL) return;
-    liberer_arbre(a->ne);
-    liberer_arbre(a->no);
-    liberer_arbre(a->se);
-    liberer_arbre(a->so);
-    free(a);
-} 
 
 ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
     ArbreQuat * arbre = malloc(sizeof(ArbreQuat));
@@ -68,7 +60,6 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
                 new_yc = parent->yc - parent->coteY / 4 ;
             }
         }
-
     *a = creerArbreQuat(new_xc , new_yc , new_coteX , new_coteY); //on cree l'arbre 
     (*a)-> noeud = n; // on ajoute le noeud 
     }
@@ -77,15 +68,37 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY){
     else if ((*a)->noeud != NULL){
         Noeud * ancien_noeud = (*a)-> noeud ; // on sauvegarde le noeud deja présent dans la cellule 
         (*a)-> noeud = NULL ; // on libere la cellule 
-        parent = (*a);
-        (*a)= NULL;
-        //on insere les deux noeuds
-        insererNoeudArbre (n, a, parent);  
-        parent = (*a);//pour ne pas avoir une segFault 
-        (*a)= NULL;
-        insererNoeudArbre (ancien_noeud, a, parent);
-        //printf("jusqu'ici tout va bien 5 \n");
         
+        parent = (*a); //on perd le parent 
+        if(n->x > (*a)-> xc ){
+            if(n->y > (*a)-> yc){ 
+                (*a)=(*a)->ne;//NE
+            }else{
+                (*a)=(*a)->se;//SE
+            }
+        }else{
+            if(n->y > (*a)-> yc){
+               (*a)=(*a)->no;//NO
+            }else{
+                (*a)=(*a)->so;//SO
+            }
+        }
+        insererNoeudArbre (n, a, parent);  
+
+        if(ancien_noeud->x > (*a)-> xc ){
+            if(ancien_noeud->y > (*a)-> yc){ 
+                (*a)=(*a)->ne;//NE
+            }else{
+                (*a)=(*a)->se;//SE
+            }
+        }else{
+            if(ancien_noeud->y > (*a)-> yc){
+               (*a)=(*a)->no;//NO
+            }else{
+                (*a)=(*a)->so;//SO
+            }
+        }
+        insererNoeudArbre (ancien_noeud, a, parent);
     }
     else{
 
@@ -117,7 +130,7 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         insererNoeudArbre(n, a, parent);
         return n ;
     }
-    else if((*a)->noeud != NULL){
+    else if((*a)->noeud != NULL ){
         Noeud* n = (*a)->noeud;
         if (n->x == x && n->y == y) {
             return n ;
@@ -128,7 +141,6 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         }
     }
     else{
-        //Noeud* n = rechercheCreeNoeudListe(R,x,y);
         ArbreQuat ** noeud_cour = NULL ;// pour parcourir l'arbre
         if(x > (*a)-> xc ){
             if(y > (*a)-> yc){ 
@@ -147,6 +159,14 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
     }
 
 } 
+void liberer_arbre(ArbreQuat * a){
+    if(a==NULL) return;
+    liberer_arbre(a->ne);
+    liberer_arbre(a->no);
+    liberer_arbre(a->se);
+    liberer_arbre(a->so);
+    free(a);
+} 
  Reseau* reconstitueReseauArbre(Chaines* C){
     //réseau
     Reseau * r=malloc(sizeof(Reseau));
@@ -164,7 +184,7 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
     double ymin,ymax;
     chaineCoordMinMax(C,&xmin,&ymin,&xmax,&ymax);
     ArbreQuat* parent=creerArbreQuat((xmax-xmin)/2.0,(ymax-ymin)/2.0,(xmax-xmin),(ymax-ymin));
-
+    ArbreQuat* pointeur_p;
     CellChaine * courant=C->chaines;
     //on parcourt toutes les chaines 
     while(courant !=NULL ){
@@ -173,12 +193,19 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         Noeud * n;
         while( p!=NULL){
             n=rechercheCreeNoeudArbre(r,&a,parent,p->x,p->y);
+            if(r->nbNoeuds==1){
+                pointeur_p=a;
+            }
             if(precedent != NULL){
                 if(p->suiv == NULL){
                     extrB=n;
                 }
-                inserer_CellNoeud_coor(&(n->voisins),creer_CellNoeuds(precedent));
-                inserer_CellNoeud_coor(&(precedent->voisins),creer_CellNoeuds(n));
+            if(noeud_existe(n->voisins,precedent->x,precedent->y) == 1){
+                inserer_CellNoeud_coor(&(n->voisins), creer_CellNoeuds(precedent));
+            }
+            if(noeud_existe(precedent->voisins,n->x,n->y) == 1){
+                inserer_CellNoeud_coor(&(precedent->voisins), creer_CellNoeuds(n));
+            }
             }else{
                 extrA=n;
             }
@@ -190,5 +217,8 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         courant=courant->suiv;
     }
     liberer_arbre(parent);
+    if((pointeur_p->ne==NULL)&& (pointeur_p->no==NULL)&&(pointeur_p->se==NULL)&&(pointeur_p->so==NULL)){
+        printf("c'est grave\n\n");
+    }
     return r;
 }

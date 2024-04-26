@@ -44,6 +44,7 @@ Noeud *creer_Noeud(int num,double x,double y);
 CellCommodite * creer_CellCommodite(Noeud * extraA,Noeud * extraB);
 void inserer_CellCommodite(CellCommodite ** liste,CellCommodite *c);
 void inserer_CellNoeud_coor(CellNoeud ** liste,CellNoeud *c);
+int noeud_existe(CellNoeud * noeud_R,double x, double y);
 
 // libère le réseau
 void libererreseau(Reseau *R);

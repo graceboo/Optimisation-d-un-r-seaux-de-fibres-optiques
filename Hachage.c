@@ -69,8 +69,12 @@ Reseau* reconstitueReseauHachage(Chaines *C, int M){
                 if(p->suiv == NULL){
                     extrB=n;
                 }
-                inserer_CellNoeud_coor(&(n->voisins),creer_CellNoeuds(precedent));
-                inserer_CellNoeud_coor(&(precedent->voisins),creer_CellNoeuds(n));
+                if(noeud_existe(n->voisins,precedent->x,precedent->y) == 1){
+                    inserer_CellNoeud_coor(&(n->voisins), creer_CellNoeuds(precedent));
+                }
+                if(noeud_existe(precedent->voisins,n->x,n->y) == 1){
+                    inserer_CellNoeud_coor(&(precedent->voisins), creer_CellNoeuds(n));
+                }
             }else{
                 extrA=n;
             }
