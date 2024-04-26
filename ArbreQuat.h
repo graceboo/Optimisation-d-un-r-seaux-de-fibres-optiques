@@ -18,4 +18,5 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY);
 Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, double x, double y);
 Reseau* reconstitueReseauArbre(Chaines* C);
 void liberer_arbre(ArbreQuat * a);
+Noeud *rechercheCreeNoeudListe2(Reseau *R,ArbreQuat **a,ArbreQuat *parent, double x, double y);
 #endif
